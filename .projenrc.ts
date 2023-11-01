@@ -15,6 +15,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
    deps: [
       'constructs',
       'graphql', // codegen
+      'graphql-request', // codegen
+      '@graphql-typed-document-node/core', // codegen
    ],
    devDeps: [
       'esbuild',
@@ -24,6 +26,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
       'typescript',
       '@graphql-codegen/introspection',
       '@graphql-codegen/client-preset',
+      '@graphql-codegen/typescript-graphql-request',
       // End codegen
    ],
    stability: 'experimental',
@@ -34,6 +37,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
       'cdk.out',
       'package-lock.json',
       'codegen.ts',
+      'progen',
+      'codegen',
    ],
 
    keywords: [
@@ -73,6 +78,7 @@ project?.tsconfigDev.addInclude('codegen.ts');
 project?.eslint?.addRules({
    '@typescript-eslint/indent': ['error', 3],
    'no-trailing-spaces': ['error', { skipBlankLines: true }],
+   'max-len': ['error', { code: 240 }],
 });
 
 // ALWAYS LAST!

@@ -36,6 +36,8 @@ graphql.config.yml
 cdk.out
 package-lock.json
 codegen.ts
+progen
+codegen
 !/.projenrc.js
 /test-reports/
 junit.xml
