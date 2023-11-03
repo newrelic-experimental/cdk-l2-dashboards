@@ -38,6 +38,7 @@ package-lock.json
 codegen.ts
 progen
 codegen
+local
 !/.projenrc.js
 /test-reports/
 junit.xml

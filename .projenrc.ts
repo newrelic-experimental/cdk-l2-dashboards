@@ -39,6 +39,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
       'codegen.ts',
       'progen',
       'codegen',
+      'local',
    ],
 
    keywords: [
@@ -75,6 +76,7 @@ project?.eslint?.addIgnorePattern('codegen.ts');
 project?.tsconfigDev.addInclude('codegen.ts');
 // End codegen
 
+project?.jest?.addSetupFile('<rootDir>/local/setEnvVars.ts');
 project?.eslint?.addRules({
    '@typescript-eslint/indent': ['error', 3],
    'no-trailing-spaces': ['error', { skipBlankLines: true }],

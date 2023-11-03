@@ -1,32 +1,70 @@
-import { CfnOutput } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { DashboardInput } from './gql/graphql';
 // eslint-disable-next-line import/no-extraneous-dependencies
+import { GraphQLError } from 'graphql';
 import { GraphQLClient } from 'graphql-request';
-import {CreateDashboardMutationVariables, getSdk} from "./sdk";
+import { GraphQLClientRequestHeaders } from 'graphql-request/build/cjs/types';
+import {
+   CreateDashboardMutation,
+   CreateDashboardMutationVariables,
+   GetDashboardQuery,
+   GetDashboardQueryVariables,
+   getSdk,
+} from './sdk/sdk';
 
-export interface DashboardCreateProps{
-   AccountId: number;
-   Dashboard: DashboardInput;
+export type dashboardManagerConfig = {
+   key: string;
+   endpoint?: string;
+};
 
-}
-export class Dashboard extends Construct {
-   constructor(scope: Construct, id: string, props: CreateDashboardMutationVariables) {
+export class DashboardManager extends Construct {
+
+   private sdk: {
+      CreateDashboard(variables: CreateDashboardMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{
+         data: CreateDashboardMutation;
+         errors?: GraphQLError[];
+         extensions?: any;
+         headers: Headers;
+         status: number;
+      }>;
+      GetDashboard(variables: GetDashboardQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{
+         data: GetDashboardQuery;
+         errors?: GraphQLError[];
+         extensions?: any;
+         headers: Headers;
+         status: number;
+      }>;
+   };
+   private defaultEndpoint: string = 'https://api.newrelic.com/graphql';
+   private readonly graphQLClient: GraphQLClient;
+
+   constructor(scope: Construct, id: string, config: dashboardManagerConfig) {
       super(scope, id);
-      const endpoint = `https://api.graph.cool/simple/v1/cixos23120m0n0173veiiwrjr`;
+      if (config == null) {
+         throw 'Missing required configuration';
+      }
 
-      const graphQLClient = new GraphQLClient(endpoint, {
+      if (config.key == null || config.key.trim() == '') {
+         throw 'License key is required';
+      }
+
+      if (config.endpoint == null || config.endpoint.trim() == '') {
+         config.endpoint = this.defaultEndpoint;
+         console.warn('Using default NerdGraph endpoint: ' + config.endpoint);
+      }
+      this.graphQLClient = new GraphQLClient(config.endpoint, {
          headers: {
-            authorization: `Bearer MY_TOKEN`,
+            'API-Key': config.key,
          },
       });
 
-      const sdk = getSdk(graphQLClient);
-      try {
-         const dashboard = await sdk.CreateDashboard(props);
-         dashboard.data.dashboardCreate.entityResult.guid;
-      } catch (error) {
-      }
+      this.sdk = getSdk(this.graphQLClient);
+
+   }
+
+   async create(props: CreateDashboardMutationVariables) {
+
+      return this.sdk.CreateDashboard(props);
+      //dashboard.data.dashboardCreate.entityResult.guid;
       // const destination = new CfnAiNotificationsDestination(this, 'L2 AINotificationsChannel Destination', { destination: destinationFragment });
       // new CfnOutput(this, 'DestinationId', {
       //    exportName: 'DestinationId',
@@ -34,7 +72,4 @@ export class Dashboard extends Construct {
       // });
    }
 
-   wrapper(props: CreateDashboardMutationVariables){
-
-   }
 }
