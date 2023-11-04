@@ -1,26 +1,32 @@
 import type {CodegenConfig} from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-    overwrite: true,
-    schema: {
-        "https://api.newrelic.com/graphql": {
-            headers: {
-                'user-agent': 'JS GraphQL',
-                'API-Key': 'YOUR_API_KEY_HERE',
-            },
-        },
-    },
-    documents: 'src/docs/**/*.graphql',
-    // documents: "src/**/*.tsx",
-    generates: {
-        "src/gql/": {
-            preset: "client",
-            plugins: []
-        },
-        "./graphql.schema.json": {
-            plugins: ["introspection"]
-        }
-    }
+   overwrite: true,
+   schema: {
+      "https://api.newrelic.com/graphql": {
+         headers: {
+            'user-agent': 'JS GraphQL',
+            'API-Key': 'YOUR_API_KEY',
+         },
+      },
+   },
+   documents: 'src/docs/**/*.graphql',
+   // documents: "src/**/*.tsx",
+   generates: {
+      "src/gql/": {
+         preset: "client",
+         plugins: []
+      },
+      "./graphql.schema.json": {
+         plugins: ["introspection"]
+      },
+      'src/sdk/sdk.ts': {
+         plugins: ['typescript', 'typescript-operations', 'typescript-graphql-request'],
+         config: {
+            rawRequest: true
+         },
+      },
+   }
 };
 
 export default config;

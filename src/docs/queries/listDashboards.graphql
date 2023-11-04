@@ -1,0 +1,37 @@
+query ListDashboards(
+    $query: String,
+) { actor { entitySearch(
+    query: $query,
+) {
+    count
+    query
+    results {
+        entities {
+            __typename
+            accountId
+            alertSeverity
+            domain
+            entityType
+            guid
+            indexedAt
+            name
+            permalink
+            reporting
+            type
+            ... on DashboardEntityOutline {
+                __typename
+                createdAt
+                dashboardParentGuid
+                permissions
+                updatedAt
+            }
+        }
+        nextCursor
+    }
+    types {
+        count
+        domain
+        entityType
+        type
+    }
+} } }

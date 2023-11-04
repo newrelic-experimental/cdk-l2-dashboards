@@ -1,0 +1,11 @@
+mutation DeleteDashboard(
+    $guid: EntityGuid!,
+) { dashboardDelete(
+    guid: $guid,
+) {
+    errors {
+        description
+        type
+    }
+    status
+} }

@@ -6,9 +6,15 @@ import { GraphQLClientRequestHeaders } from 'graphql-request/build/cjs/types';
 import {
    CreateDashboardMutation,
    CreateDashboardMutationVariables,
-   GetDashboardQuery,
-   GetDashboardQueryVariables,
+   DeleteDashboardMutation,
+   DeleteDashboardMutationVariables,
    getSdk,
+   ListDashboardsQuery,
+   ListDashboardsQueryVariables,
+   ReadDashboardQuery,
+   ReadDashboardQueryVariables,
+   UpdateDashboardMutation,
+   UpdateDashboardMutationVariables,
 } from './sdk/sdk';
 
 export type dashboardManagerConfig = {
@@ -26,8 +32,29 @@ export class DashboardManager extends Construct {
          headers: Headers;
          status: number;
       }>;
-      GetDashboard(variables: GetDashboardQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{
-         data: GetDashboardQuery;
+      UpdateDashboard(variables: UpdateDashboardMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{
+         data: UpdateDashboardMutation;
+         errors?: GraphQLError[];
+         extensions?: any;
+         headers: Headers;
+         status: number;
+      }>;
+      DeleteDashboard(variables: DeleteDashboardMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{
+         data: DeleteDashboardMutation;
+         errors?: GraphQLError[];
+         extensions?: any;
+         headers: Headers;
+         status: number;
+      }>;
+      ListDashboards(variables?: ListDashboardsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{
+         data: ListDashboardsQuery;
+         errors?: GraphQLError[];
+         extensions?: any;
+         headers: Headers;
+         status: number;
+      }>;
+      ReadDashboard(variables: ReadDashboardQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{
+         data: ReadDashboardQuery;
          errors?: GraphQLError[];
          extensions?: any;
          headers: Headers;
@@ -72,4 +99,12 @@ export class DashboardManager extends Construct {
       // });
    }
 
+   // TODO Update
+   // TODO Delete
+   // TODO Read
+   async read(props: ReadDashboardQueryVariables) {
+      return this.sdk.ReadDashboard(props);
+   }
+
+   // TODO List
 }
