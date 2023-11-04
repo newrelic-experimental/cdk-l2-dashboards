@@ -76,7 +76,8 @@ project?.eslint?.addIgnorePattern('codegen.ts');
 project?.tsconfigDev.addInclude('codegen.ts');
 // End codegen
 
-project?.jest?.addSetupFile('<rootDir>/local/setEnvVars.ts');
+project?.jest?.addSetupFile('<rootDir>/local/setupJest.ts');
+project?.jest?.addSetupFileAfterEnv('<rootDir>/local/setupJest.ts');
 project?.eslint?.addRules({
    '@typescript-eslint/indent': ['error', 3],
    'no-trailing-spaces': ['error', { skipBlankLines: true }],

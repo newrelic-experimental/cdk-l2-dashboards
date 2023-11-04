@@ -49,7 +49,7 @@ export class DashboardManager extends Construct {
 
       if (config.endpoint == null || config.endpoint.trim() == '') {
          config.endpoint = this.defaultEndpoint;
-         console.warn('Using default NerdGraph endpoint: ' + config.endpoint);
+         console.info('Using default NerdGraph endpoint: ' + config.endpoint);
       }
       this.graphQLClient = new GraphQLClient(config.endpoint, {
          headers: {
